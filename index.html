@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Signature Scanner</title>
+    <link rel="apple-touch-icon" href="icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="screen-1" class="screen active">
+        <div class="content-wrapper">
+            <div class="hero">
+                <img src="icon.png" class="main-logo">
+                <h1>Signature Scanner</h1>
+            </div>
+            <div class="menu-grid">
+                <button class="menu-card" onclick="showScreen(2)">📁 Database</button>
+                <button class="menu-card" onclick="startUploadFlow()">📤 Carica Firma</button>
+                <button class="menu-card" onclick="showScreen(4)">🔍 Scansiona</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="screen-2" class="screen">
+        <header>
+            <button class="home-btn" onclick="showScreen(1)">🏠</button>
+            <h1>Database Firme</h1>
+        </header>
+        <div class="list-wrapper">
+            <div id="database-list" class="list-container"></div>
+        </div>
+    </div>
+
+    <div id="screen-3" class="screen">
+        <header>
+            <button class="home-btn" onclick="showScreen(1)">🏠</button>
+            <h1 id="editor-title">Editor</h1>
+        </header>
+        <div class="editor-container">
+            <div class="crop-area">
+                <div id="upload-placeholder">
+                    <p>Trascina qui o clicca</p>
+                    <button class="action-btn" onclick="triggerFileSelect()">Scegli Immagine</button>
+                </div>
+                <div id="crop-wrapper" class="hidden"><img id="image-to-crop"></div>
+            </div>
+            <div id="form-fields" class="form-container hidden">
+                <div class="input-group">
+                    <div class="row"><span>Nome</span><input type="text" id="input-name"></div>
+                    <div class="row"><span>Cognome</span><input type="text" id="input-surname"></div>
+                </div>
+                <button class="save-btn" onclick="handleEditorAction()">💾 Salva nel Database</button>
+            </div>
+            <button id="scan-action-btn" class="scan-exec-btn hidden" onclick="handleEditorAction()">🚀 Avvia Confronto</button>
+        </div>
+        <input type="file" id="file-input" hidden accept="image/*">
+    </div>
+
+    <div id="screen-4" class="screen">
+        <header><button class="home-btn" onclick="showScreen(1)">🏠</button><h1>Scansione</h1></header>
+        <div class="scan-options">
+            <label class="option-card">
+                <span class="icon">📷</span>
+                <p>Usa Fotocamera</p>
+                <input type="file" accept="image/*" capture="environment" hidden onchange="handleFileChange(this, 'scan')">
+            </label>
+            <label class="option-card">
+                <span class="icon">📱</span>
+                <p>Galleria Foto</p>
+                <input type="file" accept="image/*" hidden onchange="handleFileChange(this, 'scan')">
+            </label>
+        </div>
+    </div>
+
+    <div id="screen-5" class="screen">
+        <header><button class="home-btn" onclick="showScreen(1)">🏠</button><h1>Risultato</h1></header>
+        <div class="result-card">
+            <div class="match-badge">Match: <span id="match-val">0%</span></div>
+            <div class="info-text">Trovato: <strong id="res-full-name">...</strong></div>
+            <div class="comparison">
+                <div class="box"><span>Scansione</span><img id="img-scanned"></div>
+                <div class="box"><span>Database</span><img id="img-db"></div>
+            </div>
+            <!-- Nuovo pulsante per ignorare il risultato e vedere il prossimo -->
+            <button id="retry-match-btn" class="retry-btn" onclick="tryNextMatch()">❌ Non è lui? Prova il prossimo</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
